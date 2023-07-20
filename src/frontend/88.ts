@@ -63,8 +63,3 @@ function merge(nums1: number[], m: number, nums2: number[], n: number): void {
     }
     return;
 };
-// 测试
-const nums1 = [3, 4, 7, 0, 0, 0], m = 3;
-const nums2 = [2, 5, 6], n = 3;
-merge(nums1, m, nums2, n);
-console.log(nums1);
