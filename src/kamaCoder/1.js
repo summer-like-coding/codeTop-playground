@@ -12,18 +12,26 @@
  */
 
 // 读取一行数据
-while (line = readline()) {
-    // 读取一行数据，按空格分割为数组
-    var lines = line.split(' ');
-    // 将字符串转换为数字
-    var a = parseInt(lines[0]);
-    var b = parseInt(lines[1]);
-    // 输出结果
-    print(a + b);
+while ((line = readline())) {
+  // 读取一行数据，按空格分割为数组
+  var lines = line.split(" ");
+  // 将字符串转换为数字
+  var a = parseInt(lines[0]);
+  var b = parseInt(lines[1]);
+  // 输出结果
+  print(a + b);
 }
 
-// test
-// 1 2
-// 11 40
-// 3
-// 51
+// Node
+// 引入readline模块
+let readline = require("readline");
+// 创建接口
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+// 监听
+rl.on("line", function (line) {
+  let [a, b] = line.split(" ").map((item) => parseInt(item));
+  console.log(a + b);
+});
