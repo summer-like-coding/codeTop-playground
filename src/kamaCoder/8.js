@@ -33,54 +33,59 @@ rl.on("line", function (line) {
     groupNum = parseInt(line);
   } else {
     arr = line.split(" ").map((item) => parseInt(item));
-    if (arr.length !== groupNum) {
-      rl.close();
+    if (arr.length === groupNum) {
+      // 计算平均数
+      avg = arr.reduce((pre, cur) => pre + cur, 0) / arr.length;
+      arr.forEach((item) => {
+        if (item > avg) {
+          count += item - avg;
+        }
+      });
+      console.log(count);
+      console.log();
+    } else {
+      // 重置
+      groupNum = 0;
+      count = 0;
     }
-    if (arr.length === 1 && arr[0] === 0) {
-      rl.close();
-    }
-    // 计算平均数
-    avg = arr.reduce((pre, cur) => pre + cur, 0) / arr.length;
-    // 将数组排序
-    arr.sort((a, b) => a - b);
-    getMoveCount(arr);
   }
 });
 
-function getMoveCount(arr) {
+//#region
+function getMinCount(arr) {
+  // 双指针
   let left = 0;
   let right = arr.length - 1;
+  // 移动次数
+  let count = 0;
   while (left < right) {
-    while (arr[left] < avg) {
-      // 计算最高位剩下多少
-      let rightMore = arr[right] - avg;
-      // 如果剩下的加上原来的还是小于等于平均值，那么right就减一
-      // 如果大于平均值，那么就将只减去差值
-      if (arr[left] + rightMore < avg) {
-        arr[left] += rightMore;
-        arr[right] -= rightMore;
-        count += rightMore;
-        right--;
-      } else if (arr[left] + rightMore > avg) {
-        let leftLess = avg - arr[left];
-        arr[right] -= leftLess;
-        arr[left] += leftLess;
-        count += leftLess;
+    // 如果左边的积木高度小于平均高度，则用右边积木必须保证自己的高度大于平均高度
+    if (arr[left] < avg) {
+      let need = avg - arr[left];
+      // 如果右边的积木高度大于平均高度，则右边积木高度减去平均高度，左边积木高度加上平均高度
+      if (arr[right] - need > avg) {
+        // 假如右边足够分need个(右边超过平均值)，那么左指针移动
+        arr[right] -= need;
+        arr[left] += need;
+        count += need;
         left++;
-        continue;
+      } else if (arr[right] - need < avg) {
+        // 假如右边不足以分need个，那么只能多出移动多少,那么右指针移动
+        let move = arr[right] - avg;
+        arr[right] -= move;
+        arr[left] += move;
+        count += move;
+        right--;
       } else {
-        arr[left] += rightMore;
-        arr[right] -= rightMore;
-        count += rightMore;
-        right--;
+        // 假如右边正好够分need个，那么左右指针都移动
+        arr[right] -= need;
+        arr[left] += need;
+        count += need;
         left++;
-        continue;
+        right--;
       }
     }
   }
   console.log(count);
 }
-
-// test
-let test = [5, 2, 4, 1, 7, 5];
-getMoveCount(test);
+//#endregion
