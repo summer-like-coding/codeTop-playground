@@ -25,7 +25,7 @@ function numIslands(grid: string[][]): number {
 
 };
 // 查看当前位置的上下左右四个方向，是否是1，如果是1，就继续查找，直到找到所有的1，然后将1置为2，表示已经访问过了
-function backtracking(grid: string[][], i: number, j: number, row: number, col: number) {
+export function backtracking(grid: string[][], i: number, j: number, row: number, col: number) {
 
     // 终止条件，如果当前位置已经访问了，或者当前这个位置是0，或者越界了，就不再继续查找
     if (i < 0 || j < 0 || i >= row || j >= col || grid[i][j] === '2' || grid[i][j] === '0') {
